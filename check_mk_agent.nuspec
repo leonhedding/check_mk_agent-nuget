@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>check_mk_agent</id>
+    <title>check_mk_agent</title>
+    <version>1.2.4p5</version>
+    <authors>Mathias Kettner</authors>
+    <owners>Leon Hedding</owners>
+    <summary>check_mk_agent</summary>
+    <description>Check_MK is an extension to the Nagios monitoring system that allows creating rule-based configuration using Python and offloading work from the Nagios core to make it scale better, allowing more systems to be monitored from a single Nagios server. This is the agent for Check_MK.</description>
+    <projectUrl>http://mathias-kettner.com/check_mk.html</projectUrl>
+    <tags>check_mk agent monitoring nagios</tags>
+    <copyright>2014</copyright>
+    <licenseUrl>http://www.gnu.org/licenses/gpl-2.0.html</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>http://mathias-kettner.com/check_mk_changelog_stable.html</releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
