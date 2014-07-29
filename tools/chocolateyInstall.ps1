@@ -1,6 +1,6 @@
 ﻿$packageName = 'check_mk_agent'
 $installerType = 'EXE'
-$url = 'URL_HERE'
+$url = 'https://github.com/leonhedding/check_mk_agent-nuget/raw/master/tools/check-mk-agent-1.2.4p5.exe'
 $silentArgs = '/S'
 
 Install-ChocolateyPackage "$packageName" "$installerType" "$silentArgs" "$url"
