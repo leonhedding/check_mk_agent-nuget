@@ -3,7 +3,7 @@
   <metadata>
     <id>check_mk_agent</id>
     <title>check_mk_agent</title>
-    <version>1.2.45</version>
+    <version>1.2.45.1</version>
     <authors>Mathias Kettner</authors>
     <owners>Leon Hedding</owners>
     <summary>check_mk_agent</summary>
