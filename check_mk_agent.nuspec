@@ -16,6 +16,6 @@
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
-    <file src="nsis\**" target="nsis" />
+    <file src="nsis\check-mk-agent-1.2.4p5.exe" target="nsis" />
   </files>
 </package>
