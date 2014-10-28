@@ -74,8 +74,8 @@ Section "Check_MK_Agent"
     SetOutPath "$INSTDIR"
     File check_mk_agent.exe
     File check_mk_agent.ico
+    File check_mk.ini
     File check_mk.example.ini
-	File check_mk.ini
     CreateDirectory "$INSTDIR\local"
     CreateDirectory "$INSTDIR\plugins"
 
@@ -125,9 +125,9 @@ Section "Uninstall"
   
     ; Remove files and uninstaller
     Delete "$INSTDIR\check_mk_agent.exe"
+    Delete "$INSTDIR\check_mk.ini"
     Delete "$INSTDIR\check_mk.example.ini"
     Delete "$INSTDIR\check_mk_agent.ico"
-	Delete "$INSTDIR\check_mk.ini"
 	Delete "$INSTDIR\logstate.txt"
 	Delete "$INSTDIR\plugins\*.*"
 	Delete "$INSTDIR\local\*.*"
