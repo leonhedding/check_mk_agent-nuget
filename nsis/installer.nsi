@@ -74,7 +74,8 @@ Section "Check_MK_Agent"
     SetOutPath "$INSTDIR"
     File check_mk_agent.exe
     File check_mk_agent.ico
-    File check_mk.ini
+    ; not leaving in installer as this should be customised at each installation location
+    ;File check_mk.ini 
     File check_mk.example.ini
     CreateDirectory "$INSTDIR\local"
     CreateDirectory "$INSTDIR\plugins"
@@ -105,10 +106,10 @@ SectionEnd
 
 Section "Install & start service"
     DetailPrint "Installing and starting the check_mk_agent service..."
-	nsExec::Exec 'cmd /C "$INSTDIR\check_mk_agent.exe" install'
+    nsExec::Exec 'cmd /C "$INSTDIR\check_mk_agent.exe" install'
     nsExec::Exec 'cmd /C "net start check_mk_agent"'
-	nsExec::Exec 'cmd /C netsh advfirewall firewall delete rule name="check_mk_agent.exe" program="$INSTDIR\check_mk_agent.exe"'
-	nsExec::Exec 'cmd /C netsh advfirewall firewall add rule name="check_mk_agent.exe" dir=in action=allow program="$INSTDIR\check_mk_agent.exe" enable=yes'
+    nsExec::Exec 'cmd /C netsh advfirewall firewall delete rule name="check_mk_agent.exe" program="$INSTDIR\check_mk_agent.exe"'
+    nsExec::Exec 'cmd /C netsh advfirewall firewall add rule name="check_mk_agent.exe" dir=in action=allow program="$INSTDIR\check_mk_agent.exe" enable=yes'
 SectionEnd
 
 Section "Uninstall"
@@ -117,7 +118,7 @@ Section "Uninstall"
     nsExec::Exec 'cmd /C "net stop check_mk_agent"'
     DetailPrint "Removing service..."
     nsExec::Exec 'cmd /C "$INSTDIR\check_mk_agent.exe" remove'
-	nsExec::Exec 'cmd /C netsh advfirewall firewall delete rule name="check_mk_agent.exe" program="$INSTDIR\check_mk_agent.exe"'
+    nsExec::Exec 'cmd /C netsh advfirewall firewall delete rule name="check_mk_agent.exe" program="$INSTDIR\check_mk_agent.exe"'
   
     ; Remove registry keys
     DeleteRegKey HKLM ${ARP}
@@ -128,9 +129,9 @@ Section "Uninstall"
     Delete "$INSTDIR\check_mk.ini"
     Delete "$INSTDIR\check_mk.example.ini"
     Delete "$INSTDIR\check_mk_agent.ico"
-	Delete "$INSTDIR\logstate.txt"
-	Delete "$INSTDIR\plugins\*.*"
-	Delete "$INSTDIR\local\*.*"
+    Delete "$INSTDIR\logstate.txt"
+    Delete "$INSTDIR\plugins\*.*"
+    Delete "$INSTDIR\local\*.*"
     Delete "$INSTDIR\uninstall.exe"
     RMDir "$INSTDIR\local"
     RMDir "$INSTDIR\plugins"
