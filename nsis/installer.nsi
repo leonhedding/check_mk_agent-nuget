@@ -4,9 +4,11 @@
 ; Useful sources:
 ; http://nsis.sourceforge.net/Reusable_installer_script
 !include "FileFunc.nsh"
+!include "x64.nsh"
+!include "LogicLib.nsh"
 
 !define MAJOR_VERSION "1"
-!define MINOR_VERSION "2.4p5"
+!define MINOR_VERSION "2.4p16"
 !define CHECK_MK_VERSION "${MAJOR_VERSION}.${MINOR_VERSION}"
 !define NAME "Check_MK Agent ${CHECK_MK_VERSION}"
 !define VERSION "${CHECK_MK_VERSION}"
@@ -27,9 +29,6 @@ SetDateSave on
 SetDatablockOptimize on
 CRCCheck on
 SilentInstall normal
-
-; The default installation directory
-InstallDir "$PROGRAMFILES\check_mk"
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
@@ -52,11 +51,21 @@ UninstPage instfiles
 
 ;--------------------------------
 
+
+Function .onInit
+; The default installation directory
+${If} ${RunningX64}
+    SetRegView 64
+    StrCpy $INSTDIR "$ProgramFiles64\check_mk"
+${Else}
+    StrCpy $INSTDIR "$ProgramFiles32\check_mk"
+${EndIf}
+FunctionEnd
+
 Section "Check_MK_Agent"
     ; Can not be disabled
     SectionIn RO
 
-    !include LogicLib.nsh
     ExpandEnvStrings $0 "%comspec%"
     nsExec::ExecToStack '"$0" /k "net start | FIND /C /I "check_mk_agent""'
     Pop $0
@@ -72,7 +81,12 @@ Section "Check_MK_Agent"
     ${EndIf}
 
     SetOutPath "$INSTDIR"
-    File check_mk_agent.exe
+    ; configure 32/64 bit package
+    ${If} ${RunningX64}
+        File /oname=check_mk_agent.exe check_mk_agent-64.exe
+    ${Else}
+        File check_mk_agent.exe
+    ${EndIf}
     File check_mk_agent.ico
     ; not leaving in installer as this should be customised at each installation location
     ;File check_mk.ini 
