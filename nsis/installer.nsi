@@ -8,7 +8,7 @@
 !include "LogicLib.nsh"
 
 !define MAJOR_VERSION "1"
-!define MINOR_VERSION "2.4p16"
+!define MINOR_VERSION "2.6p16"
 !define CHECK_MK_VERSION "${MAJOR_VERSION}.${MINOR_VERSION}"
 !define NAME "Check_MK Agent ${CHECK_MK_VERSION}"
 !define VERSION "${CHECK_MK_VERSION}"
@@ -88,13 +88,32 @@ Section "Check_MK_Agent"
         File check_mk_agent.exe
     ${EndIf}
     File check_mk_agent.ico
-    ; not leaving in installer as this should be customised at each installation location
-    ;File check_mk.ini 
+    File check_mk.ini
     File check_mk.example.ini
     CreateDirectory "$INSTDIR\local"
     CreateDirectory "$INSTDIR\plugins"
+    
+    ; Copy existing checks to new location
+    IfFileExists "$ProgramFiles32\check_mk\plugins\*.*" 0 NoPreviousInstall
+        CopyFiles /FILESONLY "$ProgramFiles32\check_mk\plugins\*.*" "$ProgramFiles64\check_mk\plugins\" 15
+    IfFileExists "$ProgramFiles32\check_mk\local\*.*" 0 NoPreviousInstall
+        CopyFiles /FILESONLY "$ProgramFiles32\check_mk\local\*.*" "$ProgramFiles64\check_mk\local\" 15
+    NoPreviousInstall:
+    
+    SetOutPath "$INSTDIR\plugins"
+    File /r plugins\*.*
 
     !define ARP "Software\Microsoft\Windows\CurrentVersion\Uninstall\check_mk_agent"
+    
+    ; if converting from 32bit to 64bit install then uninstall the 32bit software
+    ${If} ${RunningX64}
+        SetRegView 32
+        ReadRegStr $0 HKLM ${ARP} "DisplayName"
+        SetRegView 64
+        IfErrors done
+        ExecWait '"$ProgramFiles32\check_mk\uninstall.exe" /S'
+        done:
+    ${EndIf}
     
     ; Write the installation path into the registry
     WriteRegStr HKLM SOFTWARE\check_mk_agent "Install_Dir" "$INSTDIR"
